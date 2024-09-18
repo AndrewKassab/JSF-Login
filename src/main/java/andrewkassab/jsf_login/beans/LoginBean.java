@@ -2,14 +2,12 @@ package andrewkassab.jsf_login.beans;
 
 import andrewkassab.jsf_login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-@ManagedBean
+@ManagedBean(name="loginBean")
 @SessionScoped
-@Component
 public class LoginBean {
 
     private String username;
