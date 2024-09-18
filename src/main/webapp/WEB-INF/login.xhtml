@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="https://www.w3.org/1999/xhtml"
+      xmlns:h="https://java.sun.com/jsf/html">
+<h:head>
+    <title>Login</title>
+</h:head>
+<h:body>
+    <h:form>
+        <h3>JSF Login Logout</h3>
+        <h:outputLabel value="Username: " />
+        <h:inputText id="username" value="#{loginBean.username}"></h:inputText>
+        <br></br><br></br>
+
+        <h:outputLabel value="Password" />
+        <h:inputSecret id="password" value="#{loginBean.password}"></h:inputSecret>
+        <br></br><br></br>
+
+        <h:commandButton action="#{loginBean.login}" value="Login"></h:commandButton>
+    </h:form>
+</h:body>
+</html>
