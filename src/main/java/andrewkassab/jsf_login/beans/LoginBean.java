@@ -9,6 +9,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -63,6 +64,16 @@ public class LoginBean {
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
         }
+    }
+
+    public void logout() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+        if (session != null) {
+            session.invalidate();  // Invalidate session
+        }
+        facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Logged out successfully", null));
+        facesContext.getExternalContext().redirect("login.xhtml");
     }
 
     public String getUsername() {
