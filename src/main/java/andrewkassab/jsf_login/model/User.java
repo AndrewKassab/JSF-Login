@@ -6,7 +6,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 
 @Entity
-@Table(name = "user", catalog = "simple")
+@Table(name = "user", catalog = "jsf_login")
 public class User implements java.io.Serializable {
 
     @Id

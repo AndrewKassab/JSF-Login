@@ -9,12 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class UserService {
 
     @Autowired
     private UserDAO userDAO;
 
+    @Transactional
     public Optional<User> login(String username, String password) {
         Optional<User> user = userDAO.findUserByUsername(username);
         return user.filter(u -> u.getPassword().equals(password));

@@ -9,5 +9,6 @@
         <property name="hibernate.connection.username">loginjsfUser</property>
         <property name="hibernate.connection.password">password</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.current_session_context_class">thread</property>
     </session-factory>
 </hibernate-configuration>
