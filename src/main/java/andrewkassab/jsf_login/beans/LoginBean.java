@@ -25,10 +25,14 @@ public class LoginBean {
     private UserService userService;
 
     public void login() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
+        flash.setKeepMessages(true);  // Keeps messages for the next request
+
         if (userService.login(username, password).isPresent()) {
             FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml");
         } else {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("error.xhtml");
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Credentials.", null));
         }
     }
 

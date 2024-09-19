@@ -82,20 +82,26 @@
         }
 
         .success-message {
-            color: #28a745; /* Green for success */
+            color: #28a745;
             text-align: center;
             font-weight: bold;
-            margin-bottom: 20px; /* Spacing below the message */
-            list-style-type: none; /* Removes bullet points */
-            padding: 0; /* Removes padding which is typically associated with lists */
+            margin-bottom: 20px;
+            list-style-type: none;
+            padding: 0;
         }
 
-
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            list-style-type: none;
+        }
     </style>
 </h:head>
 <h:body>
     <div class="login-container">
-        <h:messages globalOnly="true" layout="list" styleClass="success-message"/>
+        <h:messages globalOnly="true" layout="list" styleClass="error-message"
+                    errorClass="error-message" infoClass="success-message"/>
         <h1>Login</h1>
         <h:form>
             <div class="form-group">
