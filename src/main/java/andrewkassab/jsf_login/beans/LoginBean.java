@@ -12,8 +12,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import java.io.IOException;
 
-@Component("loginBean")
-@Scope("session")
+@ManagedBean
+@SessionScoped
 public class LoginBean {
 
     private String username;
