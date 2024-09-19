@@ -80,11 +80,18 @@
         .login-link:hover {
             text-decoration: underline;
         }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
     </style>
 </h:head>
 <h:body>
     <div class="register-container">
         <h1>Register</h1>
+        <h:messages styleClass="error-message" />
         <h:form>
             <div class="form-group">
                 <h:outputLabel for="username" value="Username:"/>

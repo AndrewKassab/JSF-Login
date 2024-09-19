@@ -80,10 +80,22 @@
         .register-link:hover {
             text-decoration: underline;
         }
+
+        .success-message {
+            color: #28a745; /* Green for success */
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px; /* Spacing below the message */
+            list-style-type: none; /* Removes bullet points */
+            padding: 0; /* Removes padding which is typically associated with lists */
+        }
+
+
     </style>
 </h:head>
 <h:body>
     <div class="login-container">
+        <h:messages globalOnly="true" layout="list" styleClass="success-message"/>
         <h1>Login</h1>
         <h:form>
             <div class="form-group">

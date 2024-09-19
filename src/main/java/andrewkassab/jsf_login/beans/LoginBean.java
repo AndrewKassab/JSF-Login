@@ -4,8 +4,10 @@ import andrewkassab.jsf_login.model.User;
 import andrewkassab.jsf_login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.inject.Named;
 import java.io.IOException;
 import java.util.Optional;
@@ -31,21 +33,31 @@ public class LoginBean {
     }
 
     public void register() throws IOException {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        Flash flash = facesContext.getExternalContext().getFlash();
+        flash.setKeepMessages(true);  // Keeps messages for the next request
+
         if (!password.equals(confirmPassword)) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("error.xhtml?error=password_mismatch");
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Passwords do not match.", null));
             return;
         }
 
         Optional<User> existingUser = userService.findByUsername(username);
+
         if (existingUser.isPresent()) {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("error.xhtml?error=user_exists");
+            // Add a success message to Flash scope
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username already taken.", null));
             return;
         } else {
             User newUser = new User();
             newUser.setUsername(username);
             newUser.setPassword(password);
             userService.saveUser(newUser);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("registration_success.xhtml");
+
+            // Add a success message to Flash scope
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Account created successfully", null));
+
+            FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
         }
     }
 
