@@ -1,29 +1,32 @@
 package andrewkassab.jsf_login.beans;
 
+import andrewkassab.jsf_login.model.User;
 import andrewkassab.jsf_login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import java.io.IOException;
 
-@ManagedBean(name="loginBean")
-@SessionScoped
+@Component("loginBean")
+@Scope("session")
 public class LoginBean {
 
     private String username;
     private String password;
-    private boolean loggedIn;
 
     @Autowired
     private UserService userService;
 
-    public String login() {
-        if (userService.validateUser(username, password)) {
-            loggedIn = true;
-            return "welcome.xhtml?faces-redirect=true";
+    public void login() throws IOException {
+        if (userService.login(username, password).isPresent()) {
+            FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml");
         } else {
-            loggedIn = false;
-            return "login.xhtml?error=true";
+            FacesContext.getCurrentInstance().getExternalContext().redirect("error.xhtml");
         }
     }
 
@@ -43,11 +46,12 @@ public class LoginBean {
         this.password = password;
     }
 
-    public boolean isLoggedIn() {
-        return loggedIn;
+    public UserService getUserService() {
+        return userService;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
+
 }

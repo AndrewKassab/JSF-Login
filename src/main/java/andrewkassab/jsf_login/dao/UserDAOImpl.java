@@ -7,25 +7,24 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
+import java.util.Optional;
 
 @Repository
+@Transactional
 public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    @Transactional
-    public User findUserByUsername(String username) {
-        String hql = "FROM User WHERE username = :username";
-        return (User) sessionFactory.getCurrentSession()
-                .createQuery(hql)
+    public Optional<User> findUserByUsername(String username) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM User WHERE username = :username", User.class)
                 .setParameter("username", username)
-                .uniqueResult();
+                .uniqueResultOptional();
     }
 
     @Override
-    @Transactional
     public void saveUser(User user) {
         sessionFactory.getCurrentSession().save(user);
     }
