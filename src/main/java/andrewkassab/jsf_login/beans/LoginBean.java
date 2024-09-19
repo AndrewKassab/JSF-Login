@@ -66,12 +66,9 @@ public class LoginBean {
         }
     }
 
+    // TODO: Not working property, bean not found from welcome page
     public void logout() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
-        if (session != null) {
-            session.invalidate();  // Invalidate session
-        }
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Logged out successfully", null));
         facesContext.getExternalContext().redirect("login.xhtml");
     }
