@@ -10,9 +10,10 @@ import org.springframework.stereotype.Controller;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import java.io.IOException;
 
-@ManagedBean
+@Named("loginBean")
 @SessionScoped
 public class LoginBean {
 
