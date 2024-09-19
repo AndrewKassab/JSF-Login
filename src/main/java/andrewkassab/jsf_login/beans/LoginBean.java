@@ -1,7 +1,7 @@
 package andrewkassab.jsf_login.beans;
 
 import andrewkassab.jsf_login.model.User;
-import andrewkassab.jsf_login.service.UserServiceImpl;
+import andrewkassab.jsf_login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.faces.bean.SessionScoped;
@@ -20,7 +20,7 @@ public class LoginBean {
     private String confirmPassword;
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     public void login() throws IOException {
         if (userService.login(username, password).isPresent()) {
@@ -73,11 +73,11 @@ public class LoginBean {
         this.confirmPassword = confirmPassword;
     }
 
-    public UserServiceImpl getUserService() {
+    public UserService getUserService() {
         return userService;
     }
 
-    public void setUserService(UserServiceImpl userService) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
