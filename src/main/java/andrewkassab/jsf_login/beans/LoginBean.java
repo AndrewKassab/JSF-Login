@@ -31,12 +31,13 @@ public class LoginBean {
         flash.setKeepMessages(true);  // Keeps messages for the next request
 
         if (userService.login(username, password).isPresent()) {
+            HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
+            session.setAttribute("username", username);
             FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml");
         } else {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Credentials.", null));
         }
     }
-
     public void register() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
@@ -66,11 +67,23 @@ public class LoginBean {
         }
     }
 
-    // TODO: Not working property, bean not found from welcome page
     public void logout() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
         facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Logged out successfully", null));
         facesContext.getExternalContext().redirect("login.xhtml");
+    }
+
+    public void checkLogin() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+
+        if (session == null || session.getAttribute("username") == null) {
+            context.getExternalContext().redirect("login.xhtml");
+        }
     }
 
     public String getUsername() {
