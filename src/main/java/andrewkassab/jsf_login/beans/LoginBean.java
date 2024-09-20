@@ -51,7 +51,6 @@ public class LoginBean {
         Optional<User> existingUser = userService.findByUsername(username);
 
         if (existingUser.isPresent()) {
-            // Add a success message to Flash scope
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username already taken.", null));
             return;
         } else {
@@ -60,7 +59,6 @@ public class LoginBean {
             newUser.setPassword(password);
             userService.saveUser(newUser);
 
-            // Add a success message to Flash scope
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Account created successfully", null));
 
             FacesContext.getCurrentInstance().getExternalContext().redirect("login.xhtml");
