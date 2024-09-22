@@ -3,6 +3,7 @@ package andrewkassab.jsf_login.beans;
 import andrewkassab.jsf_login.model.User;
 import andrewkassab.jsf_login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.SessionScoped;
@@ -11,7 +12,13 @@ import javax.faces.context.Flash;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Optional;
+
+import static java.net.HttpURLConnection.HTTP_OK;
 
 @Named("loginBean")
 @SessionScoped
@@ -25,17 +32,37 @@ public class LoginBean {
     @Autowired
     private UserService userService;
 
+    @Value("${login.url}")
+    private String loginUrl;
+
     public void login() throws IOException {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         Flash flash = facesContext.getExternalContext().getFlash();
         flash.setKeepMessages(true);  // Keeps messages for the next request
 
-        if (userService.login(username, password).isPresent()) {
+        if (authenticate(username, password)) {
             HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
             session.setAttribute("username", username);
             FacesContext.getCurrentInstance().getExternalContext().redirect("welcome.xhtml");
         } else {
             facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect Credentials.", null));
+        }
+    }
+
+    private boolean authenticate(String username, String password) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(loginUrl))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(String.format("{\"username\":\"%s\", \"password\":\"%s\"}", username, password)))
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.statusCode() == HTTP_OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
     public void register() throws IOException {

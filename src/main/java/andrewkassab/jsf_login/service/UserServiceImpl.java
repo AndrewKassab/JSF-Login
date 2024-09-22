@@ -16,9 +16,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public Optional<User> login(String username, String password) {
+    public boolean authenticate(String username, String password) {
         Optional<User> user = userDAO.findUserByUsername(username);
-        return user.filter(u -> u.getPassword().equals(password));
+        return user.filter(u -> u.getPassword().equals(password)).isPresent();
     }
 
     @Override

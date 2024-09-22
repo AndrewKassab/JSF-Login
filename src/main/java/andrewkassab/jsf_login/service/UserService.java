@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    Optional<User> login(String username, String password);
+    boolean authenticate(String username, String password);
 
     Optional<User> findByUsername(String username);
 
